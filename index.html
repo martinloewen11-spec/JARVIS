@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090b0e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JARVIS">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>JARVIS</title>
+<style>
+:root{color-scheme:dark;--bg:#090b0e;--panel:#11151b;--panel2:#171d25;--line:#252d38;--muted:#8d98a7;--text:#f2f5f8;--accent:#c9d3df;--good:#a7c7b3}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#202a36 0,transparent 48%),var(--bg);color:var(--text);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+button,input,textarea{font:inherit}button{color:inherit;cursor:pointer}
+header{padding:calc(18px + env(safe-area-inset-top)) 20px 14px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff0b}
+.brand{font-size:13px;letter-spacing:.28em;font-weight:700}.status{font-size:11px;color:var(--good);letter-spacing:.12em}.status:before{content:"";display:inline-block;width:6px;height:6px;background:var(--good);border-radius:50%;margin:0 8px 1px 0}
+main{max-width:720px;margin:auto;padding:22px 16px}.greeting{color:var(--muted);font-size:13px}.hero{padding:24px 0 20px}.hero h1{font-size:30px;letter-spacing:-.04em;margin:7px 0}.hero p{color:var(--muted);margin:0;font-size:14px}
+.orb-wrap{display:flex;justify-content:center;padding:12px 0 26px}.orb{width:112px;height:112px;border-radius:50%;border:1px solid #73839666;box-shadow:0 0 55px #9db3cc1b,inset 0 0 35px #8ca3bd17;display:grid;place-items:center;background:radial-gradient(circle,#263342 0,#111820 58%,#0a0d11 75%);position:relative}.orb:before,.orb:after{content:"";position:absolute;border:1px solid #8ea3b833;border-radius:50%;inset:-9px}.orb:after{inset:-17px;border-color:#8ea3b81a}.orb span{font-size:24px;letter-spacing:.18em;font-weight:300;color:#dce5ee}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:22px 2px 12px}.section-head h2{font-size:13px;letter-spacing:.13em;text-transform:uppercase;margin:0;color:#c7d0db}.subtle{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tile,.panel{background:linear-gradient(145deg,#171d25,#10141a);border:1px solid var(--line);border-radius:16px;padding:15px}.tile{min-height:104px;text-align:left}.tile:active,.nav button:active,.primary:active{transform:scale(.985)}.tile .ico{font-size:19px;margin-bottom:12px;color:#d3dde7}.tile strong{display:block;font-size:14px;font-weight:600}.tile small{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+.panel{margin-top:10px}.chatlog{min-height:62px;max-height:220px;overflow:auto;color:#dce3eb;font-size:14px;line-height:1.5}.bubble{padding:10px 12px;border-radius:12px;background:#1c2530;margin:7px 0;white-space:pre-wrap}.bubble.user{background:#293543;margin-left:25px}.inputrow{display:flex;gap:8px;margin-top:12px}.inputrow input,.field{width:100%;background:#0b0f14;border:1px solid var(--line);border-radius:11px;padding:13px;color:var(--text);outline:none}.inputrow input:focus,.field:focus{border-color:#71869c}.send,.primary{border:1px solid #526172;background:#d9e1e9;color:#0b0f14;border-radius:11px;padding:0 16px;font-weight:700}.mic{border:1px solid var(--line);background:#1a222c;border-radius:11px;padding:0 13px}
+.nav{position:fixed;bottom:0;left:0;right:0;padding:9px 8px calc(9px + env(safe-area-inset-bottom));background:#0b0e12ed;backdrop-filter:blur(20px);border-top:1px solid var(--line);display:flex;justify-content:space-around;z-index:5}.nav button{background:none;border:0;color:#8290a0;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:55px}.nav button span{font-size:18px}.nav button.active{color:#f1f5f9}
+.view{display:none}.view.active{display:block}.list-item{display:flex;align-items:center;gap:10px;padding:12px 2px;border-bottom:1px solid #ffffff12}.list-item:last-child{border:0}.list-item input[type=checkbox]{accent-color:#cbd5df;width:18px;height:18px}.list-item .itemtext{flex:1}.list-item small{display:block;color:var(--muted);margin-top:3px}.delete{background:none;border:0;color:#788493;font-size:18px;padding:4px 8px}.addrow{display:flex;gap:8px;margin:12px 0}.addrow .field{flex:1}.addrow button{padding:0 15px}
+textarea.field{min-height:120px;resize:vertical}.memory-note{color:var(--muted);font-size:12px;line-height:1.5}.empty{color:var(--muted);font-size:13px;padding:15px 2px}
+@media(min-width:600px){main{padding:30px 24px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.hero h1{font-size:36px}}
+</style>
+</head>
+<body>
+<header><div class="brand">JARVIS <span style="color:#74879a;font-weight:400">/ PERSONAL SYSTEM</span></div><div class="status">BEREIT</div></header>
+<main>
+<section id="home" class="view active">
+<div class="hero"><div class="greeting" id="dateLine">PERSÖNLICHER ASSISTENT</div><h1>Guten Tag.</h1><p>Was kann ich für dich erledigen?</p></div>
+<div class="orb-wrap"><div class="orb"><span>J</span></div></div>
+<div class="section-head"><h2>Schnellzugriff</h2><span class="subtle">SYSTEMMODULE</span></div>
+<div class="grid">
+<button class="tile" data-go="tasks"><div class="ico">✓</div><strong>Aufgaben</strong><small>Planen & abhaken</small></button>
+<button class="tile" data-go="routines"><div class="ico">◷</div><strong>Routinen</strong><small>Dein täglicher Ablauf</small></button>
+<button class="tile" data-go="memory"><div class="ico">⌘</div><strong>Gedächtnis</strong><small>Wichtige Informationen</small></button>
+<button class="tile" data-go="notes"><div class="ico">▤</div><strong>Notizen</strong><small>Gedanken festhalten</small></button>
+</div>
+<div class="section-head"><h2>Direkt mit JARVIS</h2><span class="subtle">LOKALER MODUS</span></div>
+<div class="panel"><div class="chatlog" id="chatlog"><div class="bubble">System online. Ich kann Aufgaben, Routinen und Notizen lokal verwalten. Was steht an?</div></div><div class="inputrow"><input id="chatInput" placeholder="Nachricht an JARVIS…" autocomplete="off"><button class="mic" id="micBtn" aria-label="Spracheingabe">◉</button><button class="send" id="sendBtn">Senden</button></div></div>
+</section>
+<section id="tasks" class="view"><div class="hero"><div class="greeting">ORGANISATION</div><h1>Aufgaben</h1><p>Behalte im Blick, was erledigt werden soll.</p></div><div class="panel"><div class="addrow"><input class="field" id="taskInput" placeholder="Neue Aufgabe…"><button class="primary" id="addTask">+</button></div><div id="taskList"></div></div></section>
+<section id="routines" class="view"><div class="hero"><div class="greeting">TAGESSTRUKTUR</div><h1>Routinen</h1><p>Wiederkehrende Abläufe für deinen Alltag.</p></div><div class="panel"><div class="section-head"><h2>Morgenroutine</h2></div><div id="routineList"></div><div class="addrow"><input class="field" id="routineInput" placeholder="Schritt hinzufügen…"><button class="primary" id="addRoutine">+</button></div></div></section>
+<section id="memory" class="view"><div class="hero"><div class="greeting">PERSÖNLICHE DATEN</div><h1>Gedächtnis</h1><p>Informationen, die JARVIS lokal behalten soll.</p></div><div class="panel"><textarea class="field" id="memoryInput" placeholder="Ziele, Vorlieben, Projekte oder wichtige Informationen…"></textarea><button class="primary" id="saveMemory" style="padding:12px 16px;margin-top:10px">Gedächtnis speichern</button><p class="memory-note">Deine Einträge werden auf diesem Gerät gespeichert. Sie werden nicht automatisch mit anderen Geräten synchronisiert.</p></div></section>
+<section id="notes" class="view"><div class="hero"><div class="greeting">WISSEN & IDEEN</div><h1>Notizen</h1><p>Halte Gedanken fest und finde sie später wieder.</p></div><div class="panel"><div class="addrow"><input class="field" id="noteInput" placeholder="Neue Notiz…"><button class="primary" id="addNote">+</button></div><div id="noteList"></div></div></section>
+<section id="settings" class="view"><div class="hero"><div class="greeting">KONFIGURATION</div><h1>Einstellungen</h1><p>JARVIS auf deine Arbeitsweise abstimmen.</p></div><div class="panel"><div class="list-item"><div class="itemtext"><strong>Version</strong><small>JARVIS 0.1 · Offline-Basis</small></div></div><div class="list-item"><div class="itemtext"><strong>Datenspeicherung</strong><small>Lokaler Gerätespeicher</small></div></div><div class="list-item"><div class="itemtext"><strong>Online-KI</strong><small>Noch nicht verbunden – keine kostenpflichtige API eingerichtet</small></div></div><button id="clearData" class="field" style="margin-top:14px;color:#e4a5a5">Lokale Daten löschen</button></div></section>
+</main>
+<nav class="nav"><button class="active" data-go="home"><span>⌂</span>Start</button><button data-go="tasks"><span>✓</span>Aufgaben</button><button data-go="routines"><span>◷</span>Routinen</button><button data-go="notes"><span>▤</span>Notizen</button><button data-go="settings"><span>⚙</span>Mehr</button></nav>
+<script>
+const $=id=>document.getElementById(id), read=(k,d=[])=>{try{return JSON.parse(localStorage.getItem('jarvis_'+k))??d}catch{return d}}, save=(k,v)=>localStorage.setItem('jarvis_'+k,JSON.stringify(v));
+function go(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('[data-go]').forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo(0,0);render()}
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+$('dateLine').textContent=new Intl.DateTimeFormat('de-DE',{weekday:'long',day:'numeric',month:'long'}).format(new Date()).toUpperCase();
+let tasks=read('tasks'),routines=read('routines',['Aufstehen','Wasser trinken','Bett machen','Tagesplanung']),notes=read('notes');
+function renderList(target,items,type){const el=$(target);el.innerHTML='';if(!items.length){el.innerHTML='<div class="empty">Noch nichts eingetragen.</div>';return}items.forEach((item,i)=>{const row=document.createElement('div');row.className='list-item';if(type==='tasks'){const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!item.done;cb.onchange=()=>{items[i].done=cb.checked;save(type,items);render()};row.append(cb)}const t=document.createElement('div');t.className='itemtext';t.textContent=typeof item==='string'?item:item.text;if(type==='tasks'&&item.done)t.style.textDecoration='line-through';row.append(t);const del=document.createElement('button');del.className='delete';del.textContent='×';del.onclick=()=>{items.splice(i,1);save(type,items);render()};row.append(del);el.append(row)})}
+function render(){renderList('taskList',tasks,'tasks');renderList('routineList',routines,'routines');renderList('noteList',notes,'notes');$('memoryInput').value=read('memoryText','')}
+function add(input,arr,key,asObj=false){const v=$(input).value.trim();if(!v)return;arr.unshift(asObj?{text:v,done:false}:v);save(key,arr);$(input).value='';render()}
+$('addTask').onclick=()=>add('taskInput',tasks,'tasks',true);$('addRoutine').onclick=()=>add('routineInput',routines,'routines');$('addNote').onclick=()=>add('noteInput',notes,'notes');$('saveMemory').onclick=()=>{save('memoryText',$('memoryInput').value);alert('Gedächtnis gespeichert.')};render();
+function reply(text,user=false){const b=document.createElement('div');b.className='bubble'+(user?' user':'');b.textContent=text;$('chatlog').append(b);$('chatlog').scrollTop=$('chatlog').scrollHeight}
+function handle(){const input=$('chatInput'),q=input.value.trim();if(!q)return;reply(q,true);input.value='';const s=q.toLowerCase();let answer='Ich bin im lokalen Grundmodus. Ich kann aktuell Aufgaben, Routinen, Notizen und dein Gedächtnis verwalten. Für aktuelle Informationen und freie KI-Unterhaltungen muss später eine Online-KI sicher verbunden werden.';
+if(s.includes('hallo')||s.includes('guten'))answer='Guten Tag. Alle lokalen Module sind einsatzbereit.';
+else if(s.includes('aufgabe'))answer='Du hast '+tasks.filter(t=>!t.done).length+' offene Aufgaben. Öffne den Bereich „Aufgaben“, um sie zu verwalten.';
+else if(s.includes('routine'))answer='Deine Routine enthält '+routines.length+' Schritte. Du findest sie im Bereich „Routinen“.';
+else if(s.includes('notiz'))answer='Du hast '+notes.length+' gespeicherte Notizen.';
+else if(s.includes('uhrzeit'))answer='Es ist '+new Date().toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr.';
+else if(s.includes('datum'))answer='Heute ist '+new Date().toLocaleDateString('de-DE')+'.';
+setTimeout(()=>reply(answer),180)}
+$('sendBtn').onclick=handle;$('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')handle()});
+$('micBtn').onclick=()=>{const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){reply('Spracheingabe wird von diesem Browser nicht unterstützt.');return}const rec=new SR();rec.lang='de-DE';rec.onresult=e=>{$('chatInput').value=e.results[0][0].transcript;handle()};rec.onerror=()=>reply('Spracheingabe konnte nicht gestartet werden.');rec.start()};
+$('clearData').onclick=()=>{if(confirm('Alle lokal gespeicherten JARVIS-Daten auf diesem Gerät löschen?')){Object.keys(localStorage).filter(k=>k.startsWith('jarvis_')).forEach(k=>localStorage.removeItem(k));location.reload()}};
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>
